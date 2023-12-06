@@ -67,7 +67,8 @@ class LKMLParser:
             'view_name' : view_name,
             'sql_table_name' : sql_table_name,
             'is_derived': is_derived,
-            'derived_table_form': derived_table_form
+            'derived_table_form': derived_table_form,
+            'model_name':self.model_name
         }
         self.metadata_content.append(metadata_obj)
 
@@ -78,6 +79,7 @@ class LKMLParser:
                     data = {
                         'view_name': view_name,
                         'sql_table_name' : sql_table_name,
+                        'model_name': self.model_name,
                         'field_type': key,
                         'description':value_obj.get('description','no_description_provided'),
                         'field_name': value_obj.get('name','no_name_provided'),
