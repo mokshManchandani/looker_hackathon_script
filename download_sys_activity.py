@@ -55,6 +55,7 @@ class SysActivityDownloader:
         self.sys_activity_df.rename(
             columns={
                 "Dashboard Title":"dashboard_title",
+                "Dashboard Description": "dashboard_description",
                 "Dashboard Element Title":"element_title",
                 "Dashboard Element Type":"element_type",
                 "Query Explore":"query_view",
@@ -101,6 +102,7 @@ class SysActivityDownloader:
                 view = 'dashboard',
                 fields = [
                     "dashboard.title",
+                    "dashboard.description",
                     "dashboard_element.title",
                     "dashboard_element.type",
                     "query.view",
