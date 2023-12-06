@@ -55,12 +55,12 @@ class LKMLParser:
         This function puts the parsed code into a format which then can be converted into a tabular format
         """
         view_name = content_obj.get('name','NO_NAME_DEFINED')
-        sql_table_name = content_obj.get('sql_table_name','NO_SQL_TABLE_NAME_PROVIDED')
+        sql_table_name = content_obj.get('sql_table_name','-')
 
-        is_derived = 'VIEW_IS_DERIVED_TABLE' if sql_table_name == 'NO_SQL_TABLE_NAME_PROVIDED' else 'VIEW_IS_NOT_DERIVED_TABLE'
-        derived_table_form = 'NOT_APPLICABLE'
-        if is_derived == 'VIEW_IS_DERIVED_TABLE' and 'derived_table' in content_obj:
-            derived_table_form = 'DERIVED_TABLE_IS_NATIVE' if 'explore_source' in content_obj['derived_table'] else 'DERIVED_TABLE_IS_SQL_BASED'
+        is_derived = 'yes' if sql_table_name == '-' else 'no'
+        derived_table_form = 'no'
+        if is_derived == 'yes' and 'derived_table' in content_obj:
+            derived_table_form = 'native' if 'explore_source' in content_obj['derived_table'] else 'sql'
         
         # structure for a row in metadata table
         metadata_obj = {
@@ -79,17 +79,17 @@ class LKMLParser:
                         'view_name': view_name,
                         'sql_table_name' : sql_table_name,
                         'field_type': key,
-                        'description':value_obj.get('description','NO_DESCRIPTION_PROVIDED'),
-                        'field_name': value_obj.get('name','NO_NAME_PROVIDED'),
-                        'sql' : value_obj.get('sql','NO_SQL_PROVIDED'),
-                        'field_content_type': value_obj.get('type','NO_CONTENT_TYPE_PROVIDED'),
+                        'description':value_obj.get('description','no_description_provided'),
+                        'field_name': value_obj.get('name','no_name_provided'),
+                        'sql' : value_obj.get('sql','no_sql_provided'),
+                        'field_content_type': value_obj.get('type','no_content_type_provided'),
                         'view_is_derived_table' : is_derived,
                         'is_derived_table_native': derived_table_form,
                         'used_fields':f"{view_name}.{value_obj['name']}"
                     }
                     self.all_content.append(data)
 
-    def __preprocess_str_value(self, str, ignore_value = 'NO_SQL_TABLE_NAME_PROVIDED',replace_with = '`',replace_value=''):
+    def __preprocess_str_value(self, str, ignore_value = '-',replace_with = '`',replace_value=''):
         """
         internal function to remove the `` quotes from the string
         """
@@ -102,7 +102,7 @@ class LKMLParser:
         internal function to replace ${TABLE} with the sql_table_name provided to provide more fine grained insigths
         """
         for index,row in self.view_level_df.iterrows():
-            if row['sql_table_name'] != 'NO_SQL_TABLE_NAME_PROVIDED' and row['sql'] != 'NO_SQL_PROVIDED':
+            if row['sql_table_name'] != '-' and row['sql'] != 'no_sql_provided':
                 self.view_level_df.at[index,'sql'] = row['sql'].replace("${TABLE}",row['sql_table_name'])
 
     def __preprocess_view_level_df(self):
