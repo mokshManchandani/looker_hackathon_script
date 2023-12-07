@@ -6,6 +6,7 @@ class BigqueryService:
         self.__project_id = google_config['project_id']
         self.__dataset_id = google_config['bq_dataset_id']
         self.client = bigquery.Client()
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "key.json"
         self.name_mapping = name_mapping
     
     def create_tables(self):

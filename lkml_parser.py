@@ -17,7 +17,7 @@ class LKMLParser:
         self.model_file_glob = model_file_glob
         # to store view level df and metadata
         self.all_content = []
-        self.metadata_content = []
+        # self.metadata_content = []
     
     def read_view_files(self):
         """
@@ -63,14 +63,14 @@ class LKMLParser:
             derived_table_form = 'native' if 'explore_source' in content_obj['derived_table'] else 'sql'
         
         # structure for a row in metadata table
-        metadata_obj = {
-            'view_name' : view_name,
-            'sql_table_name' : sql_table_name,
-            'is_derived': is_derived,
-            'derived_table_form': derived_table_form,
-            'model_name':self.model_name
-        }
-        self.metadata_content.append(metadata_obj)
+        # metadata_obj = {
+        #     'view_name' : view_name,
+        #     'sql_table_name' : sql_table_name,
+        #     'is_derived': is_derived,
+        #     'derived_table_form': derived_table_form,
+        #     'model_name':self.model_name
+        # }
+        # self.metadata_content.append(metadata_obj)
 
         for key, value in content_obj.items():
             if key in self.fields:
@@ -121,6 +121,6 @@ class LKMLParser:
         """
         for content in self.content:
             self.__create_structure(content)
-        self.view_metadata_df = pd.DataFrame(self.metadata_content)
+        # self.view_metadata_df = pd.DataFrame(self.metadata_content)
         self.view_level_df = pd.DataFrame(self.all_content)
         self.__preprocess_view_level_df()

@@ -168,3 +168,4 @@ data/
 *.ipynb
 models.py
 .DS_Store
+__init__.py

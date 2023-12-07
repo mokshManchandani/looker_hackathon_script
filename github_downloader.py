@@ -8,6 +8,8 @@ class GitDownloader:
     def __init__(self, repo_link, local_dir, github_config=None):
         self.repo_link = repo_link
         self.local_dir = GitDownloader.root_path / Path(local_dir)
+        self.view_file_glob=None
+        self.model_file_glob=None
 
         #NOTE: This is important while fetching private repos
         # for public repos we can leave out the github_config and personal access tokens
@@ -20,10 +22,9 @@ class GitDownloader:
     def __get_files_glob(self):
         """
         Fetch the list of view_files and model_file(s)
-
         """
-        self._view_file_glob = [*self._views.glob("*.lkml")]
-        self._model_file_glob = [*self._models.glob('*.model.lkml')]
+        self.view_file_glob = [*self._views.glob("*.lkml")]
+        self.model_file_glob = [*self._models.glob('*.model.lkml')]
         
 
 
